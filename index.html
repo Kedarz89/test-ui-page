@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .preview {
+            margin-top: 15px;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        .delete-btn {
+            background-color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Test UI Page</h2>
+
+    <!-- Textboxes -->
+    <label>Name:</label>
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <label>Email:</label>
+    <input type="email" id="email" placeholder="Enter your email">
+
+    <!-- Dropdown -->
+    <label>Select Role:</label>
+    <select id="role">
+        <option value="">--Select--</option>
+        <option value="QA">QA Engineer</option>
+        <option value="Dev">Developer</option>
+        <option value="Manager">Manager</option>
+    </select>
+
+    <!-- Alert Buttons -->
+    <button onclick="showAlert()">Submit</button>
+    <button onclick="showTestAlert()">Test Alert</button>
+
+    <!-- File Upload -->
+    <label>Upload File:</label>
+    <input type="file" id="fileInput" onchange="previewFile()">
+
+    <div class="preview" id="preview"></div>
+</div>
+
+<script>
+    function showAlert() {
+        let name = document.getElementById("name").value;
+        let role = document.getElementById("role").value;
+
+        alert("Submitted!\nName: " + name + "\nRole: " + role);
+    }
+
+    function showTestAlert() {
+        alert("This is a test alert 🚀");
+    }
+
+    function previewFile() {
+        const fileInput = document.getElementById("fileInput");
+        const preview = document.getElementById("preview");
+
+        preview.innerHTML = "";
+
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                if (file.type.startsWith("image/")) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                } else {
+                    const text = document.createElement("p");
+                    text.textContent = "File uploaded: " + file.name;
+                    preview.appendChild(text);
+                }
+
+                // Delete button
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete File";
+                deleteBtn.className = "delete-btn";
+                deleteBtn.onclick = function() {
+                    fileInput.value = "";
+                    preview.innerHTML = "";
+                };
+
+                preview.appendChild(deleteBtn);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+</body>
+</html>
